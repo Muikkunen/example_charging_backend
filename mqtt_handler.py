@@ -1,9 +1,10 @@
 import paho.mqtt.client as mqtt
 
-import time
 import json
+import time
 
 from config import BROKER_ADDRESS, PORT, TOPIC
+
 
 # Callbacks for various MQTT events
 def on_connect(client, userdata, flags, rc):
@@ -16,6 +17,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(f"Received message: {msg.payload.decode()} on topic {msg.topic}")
+
+# TODO: Add on_error!
 
 # Create an MQTT client instance
 client = mqtt.Client()
