@@ -1,9 +1,23 @@
 import paho.mqtt.client as mqtt
 
 import json
+from pymongo import MongoClient
 import time
 
-from config import BROKER_ADDRESS, PORT, TOPIC
+from config import BROKER_ADDRESS, PORT, TOPIC, USERNAME, PASSWORD, DATABASE_URL
+
+# Connect to MongoDB (assuming it's running locally on the default port)
+database_client = MongoClient(
+    DATABASE_URL,
+    username=USERNAME,
+    password=PASSWORD,
+)
+
+# Create or switch to a specific database
+db = database_client["mydatabase"]
+
+# Create or switch to a specific collection within the database
+collection = db["mycollection"]
 
 
 # Callbacks for various MQTT events
@@ -17,7 +31,13 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(f"Received message: {msg.payload.decode()} on topic {msg.topic}")
-    # Tähän tietokantakirjoitus!
+    
+    # Insert the data into the collection
+    data = json.loads(msg.payload.decode())
+    result = collection.insert_one(data)
+
+    # Print the inserted document's ID
+    print("Inserted document ID:", result.inserted_id)
 
 
 def on_error(client, userdata, error):
@@ -30,17 +50,17 @@ def publish_message(client, message: str) -> None:
     print(f"Published message to {TOPIC}")
 
 # Create an MQTT client instance
-client = mqtt.Client()
+mqtt_client = mqtt.Client()
 
 # Set callback functions
-client.on_connect = on_connect
-client.on_message = on_message
+mqtt_client.on_connect = on_connect
+mqtt_client.on_message = on_message
 
 # Connect to the broker
-client.connect(BROKER_ADDRESS, PORT, keepalive=60)
+mqtt_client.connect(BROKER_ADDRESS, PORT, keepalive=60)
 
 # Start the MQTT loop to handle communication in the background
-client.loop_start()
+mqtt_client.loop_start()
 
 # Simulate publishing a message every 2 seconds
 try:
@@ -50,9 +70,13 @@ try:
         "duration_in_seconds":45, "session_cost_in_cents": 70
     }
     while True:
-        publish_message(client, message)
+        publish_message(mqtt_client, message)
         time.sleep(2)
 except KeyboardInterrupt:
     # Disconnect on keyboard interrupt
-    client.disconnect()
+    mqtt_client.disconnect()
     print("Disconnected from the broker")
+
+    # Close the MongoDB connection
+    database_client.close()
+    print("Closed MongoDB connection")

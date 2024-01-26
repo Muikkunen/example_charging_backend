@@ -37,6 +37,17 @@ services:
       mqtt-net:
         ipv4_address: 172.100.10.10
 
+  mongodb:
+    image: mongo
+    container_name: my-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: your_username
+      MONGO_INITDB_ROOT_PASSWORD: your_password
+    volumes:
+      - mongodb_data:/data/db
+
   mqtt-handler:
     build:
       context: .
@@ -44,7 +55,11 @@ services:
     networks:
       mqtt-net:
         ipv4_address: 172.100.10.11
+    depends_on:
+      - mqtt-broker
+      - mongodb
 
 volumes:
+  mongodb_data:
   data:
     name: "mqtt-broker-data"
