@@ -17,6 +17,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(f"Received message: {msg.payload.decode()} on topic {msg.topic}")
+    # Tähän tietokantakirjoitus!
 
 
 def on_error(client, userdata, error):
@@ -48,8 +49,8 @@ try:
         "session_id": 1, "energy_delivered_in_kWh":30,
         "duration_in_seconds":45, "session_cost_in_cents": 70
     }
-    publish_message(client, message)
     while True:
+        publish_message(client, message)
         time.sleep(2)
 except KeyboardInterrupt:
     # Disconnect on keyboard interrupt

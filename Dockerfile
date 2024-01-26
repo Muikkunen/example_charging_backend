@@ -1,4 +1,4 @@
-FROM python:3.12.1
+FROM python:3.11
 
 ADD mqtt_handler.py .
 ADD config.py .
