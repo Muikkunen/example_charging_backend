@@ -47,6 +47,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: your_password
     volumes:
       - mongodb_data:/data/db
+    networks:
+      mqtt-net:
+        ipv4_address: 172.100.10.12
 
   mqtt-handler:
     build:
