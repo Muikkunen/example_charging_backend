@@ -68,7 +68,7 @@ except ConnectionRefusedError as error:
 # Start the MQTT loop to handle communication in the background
 mqtt_client.loop_start()
 
-# Simulate publishing a message every 2 seconds
+# Simulate publishing a message every 1 minute
 try:
     time.sleep(0.1) # Ensure that connection has been established
     message = {
@@ -77,7 +77,7 @@ try:
     }
     while True:
         publish_message(mqtt_client, message)
-        time.sleep(2)
+        time.sleep(60)
 except KeyboardInterrupt:
     # Disconnect on keyboard interrupt
     mqtt_client.disconnect()
