@@ -15,9 +15,7 @@ async def lifespan(app: FastAPI):
     global collection
     global client
 
-    #client = AsyncIOMotorClient(DATABASE_URL)
     client = AsyncIOMotorClient(
-        #"mongodb://localhost:27017/",
         DATABASE_URL,
         username=USERNAME,
         password=PASSWORD
@@ -47,11 +45,3 @@ async def read_from_mongo():
         # Process each document asynchronously
         data.append(document)
     return data
-
-
-#if __name__ == "__main__":
-#    # Run the asynchronous function
-#    asyncio.run(read_from_mongo())
-
-#if __name__ == "__main__":
-#    uvicorn.run(app, port=8000, host="0.0.0.0", reload=True)
