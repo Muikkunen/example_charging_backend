@@ -6,7 +6,7 @@ import sys
 import paho.mqtt.client as mqtt
 from pymongo import MongoClient
 
-from config import BROKER_ADDRESS, PORT, TOPIC, USERNAME, PASSWORD, DATABASE_URL
+from config import BROKER_ADDRESS, PORT, TOPIC, USERNAME, PASSWORD, DATABASE_URL, DATABASE_NAME, DATABASE_COLLECTION
 
 # Connect to MongoDB
 database_client = MongoClient(
@@ -16,10 +16,10 @@ database_client = MongoClient(
 )
 
 # Create or switch to a specific database
-db = database_client["mydatabase"]
+db = database_client[DATABASE_NAME]
 
 # Create or switch to a specific collection within the database
-collection = db["mycollection"]
+collection = db[DATABASE_COLLECTION]
 
 
 # Callbacks for various MQTT events
@@ -32,6 +32,7 @@ def on_connect(client, userdata, flags, rc):
         print(f"Failed to connect, return code: {rc}")
 
 def on_message(client, userdata, msg):
+    global collection
     print(f"Received message: {msg.payload.decode()} on topic {msg.topic}")
 
     # Insert the data into the collection
