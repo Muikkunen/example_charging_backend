@@ -28,19 +28,22 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.get("/measurements/all")
+@app.get("/measurements/all", response_model=list[dict])
 async def get_measurements():
-    await read_from_mongo()
-    return {"test3": "value"}
+    # Expect that data is correct
+    # TODO: In future - load to pydantic object and show in swagger
+    return await read_from_mongo()
 
 async def read_from_mongo():
     global collection
     # Query the collection asynchronously
-    cursor = collection.find({})
+    cursor = collection.find({}, {"_id":0, "session_id":0})
 
+    data = []
     async for document in cursor:
         # Process each document asynchronously
-        print(document)
+        data.append(document)
+    return data
 
 
 #if __name__ == "__main__":
