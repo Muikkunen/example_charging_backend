@@ -7,15 +7,18 @@ from fastapi import FastAPI
 from config import DATABASE_URL, DATABASE_NAME, DATABASE_COLLECTION, PASSWORD, USERNAME
 
 collection = None
+client = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Connect to the MongoDB server
     global collection
+    global client
 
     #client = AsyncIOMotorClient(DATABASE_URL)
     client = AsyncIOMotorClient(
-        "mongodb://localhost:27017/",
+        #"mongodb://localhost:27017/",
+        DATABASE_URL,
         username=USERNAME,
         password=PASSWORD
         )

@@ -62,6 +62,21 @@ services:
       - mqtt-broker
       - mongodb
 
+  rest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile_rest_api
+    networks:
+      mqtt-net:
+        ipv4_address: 172.100.10.13
+    depends_on:
+      - mongodb
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
+
 volumes:
   mongodb_data:
   data:

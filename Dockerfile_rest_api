@@ -1,0 +1,9 @@
+FROM python:3.11
+
+ADD rest_api.py .
+ADD config.py .
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+CMD ["python",  "-m", "uvicorn", "--port", "8000", "--host", "0.0.0.0", "rest_api:app"]
