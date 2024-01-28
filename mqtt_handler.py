@@ -1,6 +1,7 @@
+import datetime
 import json
-import time
 import sys
+import time
 
 import paho.mqtt.client as mqtt
 from pymongo import MongoClient
@@ -39,7 +40,6 @@ def on_message(client, userdata, msg):
 
     # Insert the data into the collection
     data = json.loads(msg.payload.decode())
-    data["timestamp"] = msg.timestamp # Add timestamp to the data
     collection.insert_one(data)
     print("Added to database:", data)
 
@@ -49,7 +49,9 @@ def on_error(client, userdata, error):
 
 
 def publish_message(client, msg: str) -> None:
-    # Publish the message to the specified topic
+    # Add timestamp to the data
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    msg["timestamp"] = timestamp
     client.publish(TOPIC, json.dumps(msg))
     print(f"Published message to {TOPIC}")
 
