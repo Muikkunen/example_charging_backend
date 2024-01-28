@@ -29,8 +29,12 @@ db = database_client[DATABASE_NAME]
 collection = db[DATABASE_COLLECTION]
 
 
-# Callbacks for various MQTT events
 def on_connect(client, userdata, flags, rc):
+    """
+    Handles the on_connect event of the MQTT client.
+
+    Connects to the broker and subscribes to the specified topic upon successful connection.
+    """
     if rc == 0:
         print("Connected to the broker")
         # Subscribe to the topic upon connection
@@ -38,7 +42,13 @@ def on_connect(client, userdata, flags, rc):
     else:
         print(f"Failed to connect, return code: {rc}")
 
+
 def on_message(client, userdata, msg):
+    """
+    Handles the on_message event of the MQTT client.
+
+    Inserts the received message and into the MongoDB collection.
+    """
     global collection
     print(f"Received message: {msg.payload.decode()} on topic {msg.topic}")
 
@@ -49,10 +59,18 @@ def on_message(client, userdata, msg):
 
 
 def on_error(client, userdata, error):
+    """
+    Handles the on_error event of the MQTT client.
+
+    Prints the error message when an error occurs during the MQTT operation.
+    """
     print("An error occurred:", error)
 
 
 def publish_message(client, msg: str) -> None:
+    """
+    Adds a timestamp to the specified message and publises it using provided MQTT client.
+    """
     # Add timestamp to the data
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     msg["timestamp"] = timestamp

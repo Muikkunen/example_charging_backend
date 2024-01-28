@@ -16,7 +16,10 @@ client = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Connect to the MongoDB server
+    """
+    Connects to the MongoDB server and closes the connection to it
+    after the application completes.
+    """
     global collection
     global client
 
@@ -24,7 +27,7 @@ async def lifespan(app: FastAPI):
         mongo_database_url,
         username=USERNAME,
         password=PASSWORD
-        )
+    )
     # Select the database and collection
     db = client[DATABASE_NAME]
     collection = db[DATABASE_COLLECTION]
@@ -36,11 +39,20 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/measurements/all", response_model=list[dict])
 async def get_measurements():
-    # Expect that data is correct
-    # TODO: In future - load to pydantic object and show in swagger
+    """
+    Handler for the GET request to retrieve all measurements.
+
+    Retrieves measurements from the MongoDB database.
+    The data in the database is expected to consist solely of measurements
+    and they are expected to be valid data.
+    """
+    # TODO: In future - load to pydantic object and verify data
     return await read_from_mongo()
 
-async def read_from_mongo():
+async def read_from_mongo() -> list[dict]:
+    """
+    Returns the entire MongoDB collection.
+    """
     global collection
     # Query the collection asynchronously
     cursor = collection.find({}, {"_id":0, "session_id":0})
