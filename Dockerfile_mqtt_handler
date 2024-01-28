@@ -6,4 +6,4 @@ ADD src/config.py .
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-CMD ["python", "./mqtt_handler.py"]
+CMD ["python", "-u", "./mqtt_handler.py"]
