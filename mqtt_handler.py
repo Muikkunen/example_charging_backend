@@ -1,8 +1,12 @@
-import datetime
+"""
+This module provides functionality for handling MQTT messages and interacting with a MongoDB database.
+"""
+
 import json
 import sys
 import time
 
+from datetime import datetime
 import paho.mqtt.client as mqtt
 from pymongo import MongoClient
 
@@ -50,7 +54,7 @@ def on_error(client, userdata, error):
 
 def publish_message(client, msg: str) -> None:
     # Add timestamp to the data
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     msg["timestamp"] = timestamp
     client.publish(TOPIC, json.dumps(msg))
     print(f"Published message to {TOPIC}")

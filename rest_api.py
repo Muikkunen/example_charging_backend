@@ -1,3 +1,8 @@
+"""
+This module provides functionality for providing an API using FastAPI and
+fetching data from MongoDB database.
+"""
+
 import asyncio
 
 from contextlib import asynccontextmanager

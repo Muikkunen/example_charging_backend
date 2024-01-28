@@ -1,3 +1,7 @@
+"""
+This module provides configuration settings for the application.
+"""
+
 import os
 
 # MQTT broker details

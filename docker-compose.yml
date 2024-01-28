@@ -17,10 +17,6 @@ services:
         source: ./config/
         target: /mosquitto/config/
         read_only: false
-      - type: bind
-        source: ./log/
-        target: /mosquitto/log/
-        read_only: false
       - type: volume
         source: data
         target: /mosquitto/data/
@@ -45,7 +41,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: your_username
       MONGO_INITDB_ROOT_PASSWORD: your_password
-      #MQTT_BROKER_ADDRESS: 172.100.10.10
     volumes:
       - mongodb_data:/data/db
     networks:
