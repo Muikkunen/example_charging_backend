@@ -6,6 +6,4 @@ ADD config.py .
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-ENV DATABASE_URL="mongodb://172.100.10.12:27017/"
-
 CMD ["python",  "-m", "uvicorn", "--port", "8000", "--host", "0.0.0.0", "rest_api:app"]
