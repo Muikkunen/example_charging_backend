@@ -81,6 +81,7 @@ services:
         mode: host
     environment:
       DATABASE_URL: mongodb://172.100.10.12:27017/
+      DATABASE_PORT: 8000
 
 volumes:
   mongodb_data:
