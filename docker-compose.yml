@@ -11,6 +11,7 @@ networks:
 services:
   mqtt-broker:
     image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
     user: mosquitto
     volumes:
       - type: bind
@@ -48,6 +49,7 @@ services:
         ipv4_address: 172.100.10.12
 
   mqtt-handler:
+    container_name: mqtt-handler
     build:
       context: .
       dockerfile: Dockerfile_mqtt_handler
@@ -62,6 +64,7 @@ services:
       DATABASE_URL: mongodb://172.100.10.12:27017/
 
   rest-api:
+    container_name: rest-api
     build:
       context: .
       dockerfile: Dockerfile_rest_api
