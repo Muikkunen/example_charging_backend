@@ -1,7 +1,7 @@
 FROM python:3.11
 
-ADD mqtt_handler.py .
-ADD config.py .
+ADD src/mqtt_handler.py .
+ADD src/config.py .
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
