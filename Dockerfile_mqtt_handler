@@ -7,6 +7,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Define environment variable
-ENV MQTT_BROKER_ADDRESS="127.0.0.1"
+ENV MQTT_BROKER_ADDRESS="172.100.10.10"
+ENV DATABASE_URL="mongodb://172.100.10.12:27017/"
 
 CMD ["python", "./mqtt_handler.py"]

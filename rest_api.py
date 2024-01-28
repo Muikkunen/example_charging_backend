@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import FastAPI
 
-from config import DATABASE_URL, DATABASE_NAME, DATABASE_COLLECTION, PASSWORD, USERNAME
+from config import DATABASE_NAME, DATABASE_COLLECTION, PASSWORD, USERNAME, mongo_database_url
 
 collection = None
 client = None
@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     global client
 
     client = AsyncIOMotorClient(
-        DATABASE_URL,
+        mongo_database_url,
         username=USERNAME,
         password=PASSWORD
         )

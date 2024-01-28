@@ -45,6 +45,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: your_username
       MONGO_INITDB_ROOT_PASSWORD: your_password
+      #MQTT_BROKER_ADDRESS: 172.100.10.10
     volumes:
       - mongodb_data:/data/db
     networks:
@@ -54,7 +55,7 @@ services:
   mqtt-handler:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_mqtt_handler
     networks:
       mqtt-net:
         ipv4_address: 172.100.10.11

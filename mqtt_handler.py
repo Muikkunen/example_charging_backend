@@ -5,11 +5,14 @@ import sys
 import paho.mqtt.client as mqtt
 from pymongo import MongoClient
 
-from config import BROKER_ADDRESS, PORT, TOPIC, USERNAME, PASSWORD, DATABASE_URL, DATABASE_NAME, DATABASE_COLLECTION
+from config import PORT, TOPIC, USERNAME, PASSWORD, DATABASE_NAME, DATABASE_COLLECTION, broker_address, mongo_database_url
+
+# Interval in seconds for publishing MQTT messages
+MESSAGE_INTERVAL = 60
 
 # Connect to MongoDB
 database_client = MongoClient(
-    DATABASE_URL,
+    mongo_database_url,
     username=USERNAME,
     password=PASSWORD,
 )
@@ -59,9 +62,9 @@ mqtt_client.on_message = on_message
 
 try:
     # Connect to the broker
-    mqtt_client.connect(BROKER_ADDRESS, PORT, keepalive=60)
+    mqtt_client.connect(broker_address, PORT, keepalive=60)
 except ConnectionRefusedError as error:
-    print(f"{error}")
+    print(f"Cannot connect to the MQTT client. {error}")
     sys.exit(-1)
 
 # Start the MQTT loop to handle communication in the background
@@ -76,7 +79,7 @@ try:
     }
     while True:
         publish_message(mqtt_client, message)
-        time.sleep(60)
+        time.sleep(MESSAGE_INTERVAL)
 except KeyboardInterrupt:
     # Disconnect on keyboard interrupt
     mqtt_client.disconnect()
