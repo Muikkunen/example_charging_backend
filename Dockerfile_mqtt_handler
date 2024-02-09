@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-alpine3.19
 
 ADD src/mqtt_handler.py .
 ADD src/config.py .
